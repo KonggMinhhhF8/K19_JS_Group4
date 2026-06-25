@@ -44,7 +44,11 @@ function init() {
         
     });
 
-    // const table = renderTable(headers, rows)
+    const table = renderTable(headers, rows, [
+        {
+            
+        }
+    ])
 
     mainContent.append(productHeader, productStats);
 

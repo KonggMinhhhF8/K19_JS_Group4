@@ -29,10 +29,11 @@ export async function renderTable(headers, rows) {
         }
 
         const action = document.createElement('td')
-        action.innerHTML = `
-        <label for="popup-toggle" class="action-icon edit-action" title="Edit">✎</label>
-        <span class="action-icon delete-action" title="Delete">🗑</span>
-        `
+        // action.innerHTML = `
+        // <label for="popup-toggle" class="action-icon edit-action" title="Edit">✎</label>
+        // <span class="action-icon delete-action" title="Delete">🗑</span>
+        // `
+        
         action.classList = 'actions'
 
         tr.append(action)
