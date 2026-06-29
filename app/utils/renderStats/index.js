@@ -1,7 +1,11 @@
-export function renderStats({ cardContainer, cards = [] }) {
+export function renderStats({
+    cardContainer, 
+    cards = [],
+    
+}) {
     const divStats = document.createElement("section");
 
-    for (const card of cards) {
+    for(const card of cards) {
         divStats.className = cardContainer;
 
         const divCard = document.createElement("div");
