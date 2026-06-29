@@ -1,9 +1,13 @@
-import { renderHeader, renderStats, renderTable, productHeader } from './utils/index.js'
+import { renderHeader, renderStats, renderTable, productHeader } from './utils/index.js';
+import { getProduct } from './plugins/api.js'; 
 
-const mainContent = document.querySelector(".main-content")
+const mainContent = document.querySelector(".main-content");
 
-function init() {
-    const productHeader =  renderHeader({
+async function init() {
+    const products = await getProduct();
+    console.log(productHeader);
+    
+    const productHeading = await renderHeader({
         type: "product",
         placeholderText: "Tìm tên sản phẩm, mã SKU ...",
         buttonText: "Thêm sản phẩm",
@@ -17,7 +21,7 @@ function init() {
         // }
     });
 
-    const productStats = renderStats({
+    const productStats = await renderStats({
         cardContainer: "stats",
         cards: [
             {
@@ -44,9 +48,9 @@ function init() {
         
     });
 
-    // const table = renderTable(headers, rows) 
+    const table = await renderTable(productHeader, products);
 
-    mainContent.append(productHeader, productStats);
+    mainContent.append(productHeading, productStats, table);
 
 }
 
