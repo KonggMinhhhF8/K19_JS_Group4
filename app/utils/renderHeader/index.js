@@ -1,18 +1,16 @@
-export function renderHeader({ 
-    type = "product", 
-    placeholderText, 
-    buttonText, 
-    buttonIcon, 
-    buttonClass, 
+export function renderHeader({
+    type = "product",
+    placeholderText,
+    buttonText,
+    buttonIcon,
+    buttonClass,
     titleText,
     extraOptions = {},
 }) {
-
-
     const mainContent = document.querySelector(".main-content");
     const container = document.createElement("header");
-    
-    if(type === "product") {
+
+    if (type === "product") {
         // Search Bar
         const divSearchBar = document.createElement("div");
         divSearchBar.className = "search-bar";
@@ -23,7 +21,6 @@ export function renderHeader({
         searchInput.placeholder = placeholderText;
 
         divSearchBar.append(searchInput);
-
 
         // Button Addition
         const divButton = document.createElement("div");
@@ -38,17 +35,16 @@ export function renderHeader({
         const span = document.createElement("span");
         span.innerText = " " + buttonText;
 
-        addBtn.append(icon, span)
+        addBtn.append(icon, span);
 
-        divButton.append(addBtn)
+        divButton.append(addBtn);
 
         // Append
         container.append(divSearchBar, divButton);
-
     }
 
     //Extra Options
-    if(type === "report") {
+    if (type === "report") {
         // Title
         const title = document.createElement("h2");
         title.innerText = titleText || "";
@@ -59,7 +55,8 @@ export function renderHeader({
         if (extraOptions.dateStart || extraOptions.dateEnd) {
             const dateStart = document.createElement("input");
             dateStart.type = "date";
-            if (extraOptions.dateStart) dateStart.value = extraOptions.dateStart;
+            if (extraOptions.dateStart)
+                dateStart.value = extraOptions.dateStart;
 
             const dateEnd = document.createElement("input");
             dateEnd.type = "date";

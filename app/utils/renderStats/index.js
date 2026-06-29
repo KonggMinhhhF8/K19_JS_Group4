@@ -16,13 +16,12 @@ export function renderStats({
 
         const price = document.createElement("p");
         price.innerText = card.cardContent;
-        if(card.cardContentClass) {
+        if (card.cardContentClass) {
             price.className = card.cardContentClass;
         }
 
-        
         divCard.append(titleH3, price);
-        if(card.trend) {
+        if (card.trend) {
             const divTrend = document.createElement("div");
             divTrend.className = "trend";
             divTrend.classList.add(card.trendStats);
@@ -30,9 +29,9 @@ export function renderStats({
             if (card.trendIcon) {
                 const icon = document.createElement("i");
                 icon.className = card.trendIcon;
-                divTrend.append(icon);  
+                divTrend.append(icon);
             }
-             if (card.trendText) {
+            if (card.trendText) {
                 const span = document.createElement("span");
                 span.innerText = " " + card.trendText;
                 divTrend.append(span);
@@ -42,8 +41,6 @@ export function renderStats({
         }
         divStats.append(divCard);
     }
-
-    
 
     return divStats;
 }

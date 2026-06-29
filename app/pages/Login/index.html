@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Đăng nhập - ShopAdmin</title>
+
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+
+        <style>
+            :root {
+                --primary-color: #3498db;
+                --dark-color: #2c3e50;
+                --bg-color: #f4f7f6;
+                --white: #ffffff;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Segoe UI", sans-serif;
+            }
+
+            body {
+                background: var(--bg-color);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .login-card {
+                width: 420px;
+                background: var(--white);
+                border-radius: 12px;
+                padding: 40px;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            }
+
+            .logo {
+                text-align: center;
+                margin-bottom: 35px;
+            }
+
+            .logo h1 {
+                color: var(--primary-color);
+                font-size: 2.2rem;
+                margin-bottom: 10px;
+            }
+
+            .logo p {
+                color: #7f8c8d;
+                font-size: 15px;
+            }
+
+            .form-group {
+                margin-bottom: 22px;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+                color: #555;
+            }
+
+            .input-group {
+                display: flex;
+                align-items: center;
+                border: 1px solid #dcdcdc;
+                border-radius: 8px;
+                overflow: hidden;
+                transition: 0.2s;
+                background: #fff;
+            }
+
+            .input-group:focus-within {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+            }
+
+            .input-group i {
+                width: 50px;
+                text-align: center;
+                color: #888;
+            }
+
+            .input-group input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 14px 14px 14px 0;
+                font-size: 15px;
+                background: transparent;
+            }
+
+            .remember {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 25px;
+                font-size: 14px;
+            }
+
+            .remember label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+            }
+
+            .remember a {
+                text-decoration: none;
+                color: var(--primary-color);
+            }
+
+            .remember a:hover {
+                text-decoration: underline;
+            }
+
+            button {
+                width: 100%;
+                border: none;
+                padding: 14px;
+                background: var(--primary-color);
+                color: white;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: 0.25s;
+            }
+
+            button:hover {
+                background: #2980b9;
+            }
+
+            .demo-account {
+                margin-top: 25px;
+                background: #eef6fc;
+                border-left: 4px solid var(--primary-color);
+                padding: 15px;
+                border-radius: 8px;
+                font-size: 14px;
+                color: #555;
+            }
+
+            .demo-account h4 {
+                margin-bottom: 10px;
+                color: var(--dark-color);
+            }
+
+            .demo-account p {
+                margin-bottom: 5px;
+            }
+
+            @media (max-width: 480px) {
+                body {
+                    padding: 20px;
+                }
+
+                .login-card {
+                    width: 100%;
+                    padding: 30px 25px;
+                }
+
+                .remember {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 10px;
+                }
+            }
+        </style>
+    </head>
+
+    <body></body>
+</html>

@@ -1,57 +1,49 @@
-import { renderHeader, renderStats, renderTable, productHeader } from './utils/index.js';
-import { getProduct } from './plugins/api.js'; 
+import {
+    HomePage,
+    LoginPage,
+    ProductsPage,
+    CustomersPage,
+    OrdersPage,
+    ReportsPage,
+} from "./pages";
+import { requireAuth } from "./api/auth.js";
+import router from "./plugins/router.js";
 
-const mainContent = document.querySelector(".main-content");
+const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
-async function init() {
-    const products = await getProduct();
-    console.log(productHeader);
-    
-    const productHeading = await renderHeader({
-        type: "product",
-        placeholderText: "Tìm tên sản phẩm, mã SKU ...",
-        buttonText: "Thêm sản phẩm",
-        buttonIcon: "fas fa-plus",
-        buttonClass: "btn-add",
-        // extraOptions: {
-        //     filterClass: "filter-group",   
-        //     dateStart: "2026-01-01",       
-        //     dateEnd: "2026-01-24",         
-        //     filterText: "Lọc"
-        // }
+router.on("", function () {
+    requireAuth(() => {
+        HomePage();
     });
+});
 
-    const productStats = await renderStats({
-        cardContainer: "stats",
-        cards: [
-            {
-                cardClass: "card",
-                cardTitle: "Tổng sản phẩm",
-                cardContent: "1240",
-                cardContentClass: "value",
-                // trend: true,
-                // trendText: "12% so với tháng trước",
-                // trendStats: "up",
-                // trendIcon: "fas fa-arrow-up"
-            },  
-            {
-                cardClass: "card",
-                cardTitle: "Sắp hết hàng",
-                cardContent: "12"
-            },
-            {
-                cardClass: "card",
-                cardTitle: "Danh mục",
-                cardContent: "15"
-            },
-        ]
-        
+router.on("/login", function () {
+    LoginPage();
+});
+
+router.on("/products", function () {
+    requireAuth(() => {
+        ProductsPage();
     });
+});
 
-    const table = await renderTable(productHeader, products);
+router.on("/customers", function () {
+    requireAuth(() => {
+        CustomersPage();
+    });
+});
 
-    mainContent.append(productHeading, productStats, table);
+router.on("/orders", function () {
+    requireAuth(() => {
+        OrdersPage();
+    });
+});
 
-}
+router.on("/reports", function () {
+    requireAuth(() => {
+        ReportsPage();
+    });
+});
 
-init();
+router.resolve();
