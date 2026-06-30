@@ -6,6 +6,7 @@ export function renderHeader({
     // buttonText,
     // buttonIcon,
     // buttonClass,
+    showButtons = true,
     buttons = [
         {
            buttonText: "Add product",
@@ -37,28 +38,7 @@ export function renderHeader({
             container.append(divSearchBar)
         }
 
-
-        // Button Addition
-        // if(false) {
-        //     const divButton = document.createElement("div");
-        //     divButton.className = "user-actions";
-
-        //     const addBtn = document.createElement("button");
-        //     addBtn.className = buttonClass || "btn-add";
-
-        //     const icon = document.createElement("i");
-        //     icon.className = buttonIcon;
-
-        //     const span = document.createElement("span");
-        //     span.innerText = " " + buttonText;
-
-        //     addBtn.append(icon, span);
-
-        //     divButton.append(addBtn);
-        //     container.append(divButton);
-        // }
-
-        if(buttons.length > 0) {
+        if(buttons.length > 0 && showButtons) {
             const divButton = document.createElement("div");
             divButton.className = "user-actions";
 
