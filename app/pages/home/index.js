@@ -1,4 +1,6 @@
 // import "../../assets/css/home.css";
+import { get, post, deleteById, patch, put } from "../../api/api.js";
+import { renderHeader, renderStats, renderTable, homeHeader} from '../../utils/index.js';
 
 const app = document.getElementById("app");
 
@@ -6,17 +8,7 @@ const html = `
         <div class="overlay" id="overlay"></div>
 
         <div class="container">
-            <aside class="sidebar" id="sidebar">
-                <h2>ShopAdmin</h2>
-                <ul>
-                    <li class="active">
-                        <i class="fas fa-home"></i> Tổng quan
-                    </li>
-                    <li><i class="fas fa-box"></i> Sản phẩm</li>
-                    <li><i class="fas fa-shopping-bag"></i> Đơn hàng</li>
-                    <li><i class="fas fa-users"></i> Khách hàng</li>
-                </ul>
-            </aside>
+            
 
             <main class="main-content">
                 <header>
@@ -127,9 +119,63 @@ const html = `
         </div>
 `;
 
-const HomePage = () => {
+const HomePage = async () => {
     console.log("Home Page");
+
+    const header = await renderHeader({
+        input: false,
+        button: false,
+        title: true,
+        innerTitle: "Admin",
+        iconTitle: "fa-solid fa-user"
+        
+    });
+
+    const stats = renderStats({
+        cardContainer: "stats",
+        cards: [
+            {
+                cardClass: "card",
+                cardTitle: "Doanh thu",
+                cardContent: "2.500.000đ",
+            },  
+            {
+                cardClass: "card",
+                cardTitle: "Đơn mới",
+                cardContent: "12"
+            }
+        ]
+        
+    });
+
+    const getHome = async (accessToken) => {
+        console.log("get home");
+
+        const response = await get("orders", accessToken);
+        console.log(response);
+
+        return response;
+    };
+
+    const data = await getHome();
+    const table = await renderTable(homeHeader, data, {
+        tableContainer: "table-section",
+        tableHeader: "table-title",
+        tableBox: "table-wrapper" 
+    }, false, {
+        title: true,
+        titleText: "Đơn hàng gần đây",
+    })
+
     app.innerHTML = html;
+    const mainContent = document.createElement("main");
+    mainContent.className = "main-content";
+
+    mainContent.append(header, stats, table)
+    const container = document.createElement("div");
+    container.className = "container"
+    container.append(mainContent)
+    app.append(container);
 };
 
 export default HomePage;
