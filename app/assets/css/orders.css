@@ -179,6 +179,9 @@ td {
     font-size: 0.75rem;
     font-weight: bold;
     text-transform: uppercase;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 .badge.pending {
     background: #fff3e0;
@@ -225,4 +228,9 @@ small {
     color: #7f8c8d;
     display: block;
     margin-top: 2px;
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
 }
