@@ -1,7 +1,7 @@
-export { default as HomePage } from "./Home";
-export { default as ProductsPage } from "./Products";
-export { default as CustomersPage } from "./Customers";
-export { CreateCustomerPage } from "./Customers/create.js";
-export { default as OrdersPage } from "./Orders";
-export { default as LoginPage } from "./Login";
-export { default as ReportsPage } from "./Reports";
+export { default as HomePage } from "./home";
+export { default as ProductsPage } from "./products";
+export { default as CustomersPage } from "./customers";
+export { CreateCustomerPage } from "./customers/create.js";
+export { default as OrdersPage } from "./orders";
+export { default as LoginPage } from "./login";
+export { default as ReportsPage } from "./reports";
