@@ -1,4 +1,7 @@
 import { get, post, deleteById, patch, put } from "/app/api/api.js";
+import "../../assets/css/customers.css";
+import { isAuthenticated } from "../../api/auth.js";
+import router from "../../plugins/router.js";
 
 const app = document.getElementById("app");
 
@@ -27,7 +30,7 @@ const html = `
                             placeholder="Tìm tên, email hoặc số điện thoại"
                         />
                     </div>
-                    <button class="btn-add" onclick="openModal()">
+                    <button id="btn-add-customer" class="btn-add">
                         <i class="fas fa-user-plus"></i> Thêm khách hàng
                     </button>
                 </header>
@@ -206,71 +209,75 @@ const html = `
             </main>
         </div>
 
-        <!-- Modal thêm khách hàng -->
-        <div
-            id="modal"
-            style="
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                justify-content: center;
-                align-items: center;
-            "
-        >
-            <div
-                style="
-                    background: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    width: 300px;
-                "
-            >
-                <h3>Thêm khách hàng</h3>
-                <input
-                    id="name"
-                    placeholder="Tên"
-                    style="width: 100%; margin: 5px 0; padding: 8px"
-                />
-                <input
-                    id="email"
-                    placeholder="Email"
-                    style="width: 100%; margin: 5px 0; padding: 8px"
-                />
-                <input
-                    id="phone"
-                    placeholder="SĐT"
-                    style="width: 100%; margin: 5px 0; padding: 8px"
-                />
-                <select
-                    id="tier"
-                    style="width: 100%; margin: 5px 0; padding: 8px"
-                >
-                    <option value="gold">Vàng</option>
-                    <option value="silver">Bạc</option>
-                    <option value="bronze">Đồng</option>
-                </select>
-                <button onclick="addCustomer()" style="margin-top: 10px">
-                    Lưu
-                </button>
-                <button onclick="closeModal()">Hủy</button>
-            </div>
-        </div>
+       
 `;
 
+// let temp = `
+//  <!-- Modal thêm khách hàng -->
+//         <div
+//             id="modal"
+//             style="
+//                 display: none;
+//                 position: fixed;
+//                 top: 0;
+//                 left: 0;
+//                 width: 100%;
+//                 height: 100%;
+//                 background: rgba(0, 0, 0, 0.5);
+//                 justify-content: center;
+//                 align-items: center;
+//             "
+//         >
+//             <div
+//                 style="
+//                     background: white;
+//                     padding: 20px;
+//                     border-radius: 10px;
+//                     width: 300px;
+//                 "
+//             >
+//                 <h3>Thêm khách hàng</h3>
+//                 <input
+//                     id="name"
+//                     placeholder="Tên"
+//                     style="width: 100%; margin: 5px 0; padding: 8px"
+//                 />
+//                 <input
+//                     id="email"
+//                     placeholder="Email"
+//                     style="width: 100%; margin: 5px 0; padding: 8px"
+//                 />
+//                 <input
+//                     id="phone"
+//                     placeholder="SĐT"
+//                     style="width: 100%; margin: 5px 0; padding: 8px"
+//                 />
+//                 <select
+//                     id="tier"
+//                     style="width: 100%; margin: 5px 0; padding: 8px"
+//                 >
+//                     <option value="gold">Vàng</option>
+//                     <option value="silver">Bạc</option>
+//                     <option value="bronze">Đồng</option>
+//                 </select>
+//                 <button onclick="addCustomer()" style="margin-top: 10px">
+//                     Lưu
+//                 </button>
+//                 <button onclick="closeModal()">Hủy</button>
+//             </div>
+//         </div>
+// `
+
 const CustomersPage = async () => {
-    console.log("Customers Page");
     app.innerHTML = html;
+    const customers = await get("customers");
+    console.log(customers);
 
-    const getCustomers = async (accessToken) => {
-        console.log("get customers");
-
-        const response = await get("/customers", accessToken);
-        console.log(response);
-    };
+    const btnAddCustomer = document.getElementById("btn-add-customer");
+    btnAddCustomer.addEventListener("click", () => {
+        router.navigate("/customers/create");
+        router.resolve();
+    });
 };
 
 export default CustomersPage;

@@ -1,3 +1,5 @@
+// import "../../assets/css/home.css";
+
 const app = document.getElementById("app");
 
 const html = `
