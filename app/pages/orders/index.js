@@ -182,11 +182,20 @@ const OrdersPage = async () => {
 
     const header = renderHeader({
         input: true,
-        placeholderText: "Tìm tên mã đơn, tên khách hàng...",
-        button: true,
-        buttonText: "Xuất Excel",
-        buttonIcon: "fa-solid fa-file-export",
-        buttonClass: "btn-export",
+        placeholderText: "Tìm tên mã đơn, tên khách hàng...",        
+        buttons: [
+            {
+                buttonText: "Thêm order",
+                buttonIcon: "fas fa-plus",
+                buttonClass: "btn-add",
+            },
+            {
+                buttonText: "Xuất Excel",
+                buttonIcon: "fa-solid fa-file-export",
+                buttonClass: "btn-export",
+            },
+            
+        ]
        
     })
 
@@ -254,7 +263,7 @@ const OrdersPage = async () => {
     container.append(mainContent);
     
     app.innerHTML = html;
-    app.append(container)
+    app.append(container);
 };
 
 export default OrdersPage;

@@ -267,10 +267,14 @@ const CustomersPage = async () => {
     const header = await renderHeader({
         input: true,
         placeholderText: "Tìm tên, email hoặc số điện thoại",
-        button: true,
-        buttonText: "Thêm khách hàng",
-        buttonIcon: "fas fa-plus",
-        buttonClass: "btn-add",
+        buttons: [
+            {
+                buttonText: "Thêm khách hàng",
+                buttonIcon: "fas fa-plus",
+                buttonClass: "btn-add",
+            }
+        ]
+        
     });
 
     const stats = await renderStats({
@@ -313,8 +317,19 @@ const CustomersPage = async () => {
 
     const table = await renderTable(customerHeader, data);
 
+
+    const container = document.createElement("div");
+    container.className = "container";
+
+    const mainContent = document.createElement("main");
+    mainContent.className = "main-content";
+
+    mainContent.append(header, stats, table);
+
+    container.append(mainContent)
+
     app.innerHTML = html;
-    app.append(header, stats, table);
+    app.append(container);
 };
 
 export default CustomersPage;

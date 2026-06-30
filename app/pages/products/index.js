@@ -10,10 +10,14 @@ const ProductsPage = async () => {
         type: "product",
         input: true,
         placeholderText: "Tìm tên sản phẩm, mã SKU ...",
-        button: true,
-        buttonText: "Thêm sản phẩm",
-        buttonIcon: "fas fa-plus",
-        buttonClass: "btn-add",
+        buttons: [
+            {
+                buttonText: "Thêm sản phẩm",
+                buttonIcon: "fas fa-plus",
+                buttonClass: "btn-add",
+            },
+        ]
+        
         // extraOptions: {
         //     filterClass: "filter-group",   
         //     dateStart: "2026-01-01",       
@@ -59,7 +63,18 @@ const ProductsPage = async () => {
     const data = await getProducts();
 
     const table = await renderTable(productHeader, data);
-    app.append(header, stats, table);
+
+    const container = document.createElement("div");
+    container.className = "container";
+
+    const mainContent = document.createElement("main");
+    mainContent.className = "main-content";
+
+    mainContent.append(header, stats, table);
+
+    container.append(mainContent);
+
+    app.append(container);
 };
 
 export default ProductsPage;

@@ -2,10 +2,17 @@ export function renderHeader({
     type = "product",
     input = false,
     placeholderText,
-    button = false,
-    buttonText,
-    buttonIcon,
-    buttonClass,
+    // button = false,
+    // buttonText,
+    // buttonIcon,
+    // buttonClass,
+    buttons = [
+        {
+           buttonText: "Add product",
+           buttonIcon: "fas fa-plus",
+           buttonClass: ""
+        }
+    ],
     titleText,
     title = false,
     innerTitle,
@@ -32,23 +39,45 @@ export function renderHeader({
 
 
         // Button Addition
-        if(button) {
+        // if(false) {
+        //     const divButton = document.createElement("div");
+        //     divButton.className = "user-actions";
+
+        //     const addBtn = document.createElement("button");
+        //     addBtn.className = buttonClass || "btn-add";
+
+        //     const icon = document.createElement("i");
+        //     icon.className = buttonIcon;
+
+        //     const span = document.createElement("span");
+        //     span.innerText = " " + buttonText;
+
+        //     addBtn.append(icon, span);
+
+        //     divButton.append(addBtn);
+        //     container.append(divButton);
+        // }
+
+        if(buttons.length > 0) {
             const divButton = document.createElement("div");
             divButton.className = "user-actions";
 
-            const addBtn = document.createElement("button");
-            addBtn.className = buttonClass || "btn-add";
+            buttons.forEach(btnConfig => {
+                const addBtn = document.createElement("button");
+                addBtn.className = btnConfig.buttonClass || "btn-add";
 
-            const icon = document.createElement("i");
-            icon.className = buttonIcon;
+                const icon = document.createElement("i");
+                icon.className = btnConfig.buttonIcon;
 
-            const span = document.createElement("span");
-            span.innerText = " " + buttonText;
+                const span = document.createElement("span");
+                span.innerText = " " + btnConfig.buttonText;
 
-            addBtn.append(icon, span);
+                addBtn.append(icon, span);
+                divButton.append(addBtn);
 
-            divButton.append(addBtn);
+            });
             container.append(divButton);
+
         }
 
         if(title) {
