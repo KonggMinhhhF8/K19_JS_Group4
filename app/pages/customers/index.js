@@ -76,7 +76,7 @@ const CustomersPage = async () => {
 
     app.append(container);
 
-    const btnAddCustomer = document.getElementById("btn-add-customer");
+    const btnAddCustomer = document.querySelector(".btn-add");
     btnAddCustomer.addEventListener("click", () => {
         router.navigate("/customers/create");
         router.resolve();
