@@ -1,19 +1,10 @@
+import { renderHeader, renderStats, renderTable, orderHeader} from '../../utils/index.js';
+import { get } from '../../api/api.js';
 const app = document.getElementById("app");
 
 const html = `
         <div class="container">
-            <aside class="sidebar">
-                <h2>ShopAdmin</h2>
-                <ul>
-                    <li><i class="fas fa-home"></i> Tổng quan</li>
-                    <li><i class="fas fa-box"></i> Sản phẩm</li>
-                    <li class="active">
-                        <i class="fas fa-shopping-cart"></i> Đơn hàng
-                    </li>
-                    <li><i class="fas fa-users"></i> Khách hàng</li>
-                    <li><i class="fas fa-chart-line"></i> Báo cáo</li>
-                </ul>
-            </aside>
+            
 
             <main class="main-content">
                 <header>
@@ -184,9 +175,86 @@ const html = `
         </div>
 `;
 
-const OrdersPage = () => {
+
+
+const OrdersPage = async () => {
     console.log("Orders Page");
+
+    const header = renderHeader({
+        input: true,
+        placeholderText: "Tìm tên mã đơn, tên khách hàng...",
+        button: true,
+        buttonText: "Xuất Excel",
+        buttonIcon: "fa-solid fa-file-export",
+        buttonClass: "btn-export",
+       
+    })
+
+    const stats = renderStats({
+        cardContainer: "stats",
+        cards: [
+            {
+                cardClass: "card blue",
+                cardTitle: "Tổng đơn hàng",
+                cardContent: "1,024",
+                cardContentClass: "value",
+                // trend: true,
+                // trendText: "12% so với tháng trước",
+                // trendStats: "up",
+                // trendIcon: "fas fa-arrow-up"
+            },  
+            {
+                cardClass: "card orange",
+                cardTitle: "Đang xử lý",
+                cardContent: "15"
+            },
+            {
+                cardClass: "card green",
+                cardTitle: "Thành công",
+                cardContent: "980"
+            },
+            {
+                cardClass: "card red",
+                cardTitle: "Đã hủy",
+                cardContent: "29"
+            },
+        ]
+        
+    })
+
+    const getOrders = async (accessToken) => {
+        console.log("get orders");
+
+        const response = await get("orders", accessToken);
+        console.log(response);
+
+        return response;
+    };
+
+    const data = await getOrders();
+    const table = await renderTable(orderHeader, data, {
+        tableContainer: "table-container",
+        tableHeader: "order-controls",
+    },
+    true,
+    {   title: true,
+        titleText: "Tabs sẽ ở đây",
+        date: true
+    })
+
+
+    const container = document.createElement("div");
+    container.className = "container";
+
+    const mainContent = document.createElement('main');
+    mainContent.className = "main-content"
+
+    mainContent.append(header, stats, table)
+
+    container.append(mainContent);
+    
     app.innerHTML = html;
+    app.append(container)
 };
 
 export default OrdersPage;
