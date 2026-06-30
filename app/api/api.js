@@ -14,7 +14,7 @@ const get = async (endpoint) => {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        if (response.status === 403) {
+        if (!response.ok) {
             logout();
             return;
         }
@@ -39,7 +39,7 @@ const post = async (endpoint, body) => {
             },
             body: JSON.stringify(body),
         });
-        if (response.status === 403) {
+        if (!response.ok) {
             logout();
             return;
         }
@@ -62,7 +62,7 @@ const deleteById = async (endpoint, id) => {
                 Authorization: `Bearer ${accessToken}`,
             },
         });
-        if (response.status === 403) {
+        if (!response.ok) {
             logout();
             return;
         }
@@ -87,7 +87,7 @@ const patch = async (endpoint, id, body) => {
             },
             body: JSON.stringify(body),
         });
-        if (response.status === 403) {
+        if (!response.ok) {
             logout();
             return;
         }
@@ -112,7 +112,7 @@ const put = async (endpoint, id, body) => {
             },
             body: JSON.stringify(body),
         });
-        if (response.status === 403) {
+        if (!response.ok) {
             logout();
             return;
         }

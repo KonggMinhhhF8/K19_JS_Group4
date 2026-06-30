@@ -3,10 +3,11 @@ import {
     LoginPage,
     ProductsPage,
     CustomersPage,
+    CreateCustomerPage,
     OrdersPage,
     ReportsPage,
 } from "./pages";
-import { requireAuth } from "./api/auth.js";
+import { isAuthenticated, requireAuth } from "./api/auth.js";
 import router from "./plugins/router.js";
 
 const accessToken = localStorage.getItem("accessToken");
@@ -19,6 +20,10 @@ router.on("", function () {
 });
 
 router.on("/login", function () {
+    if (isAuthenticated()) {
+        router.navigate("/");
+        return;
+    }
     LoginPage();
 });
 
@@ -31,6 +36,12 @@ router.on("/products", function () {
 router.on("/customers", function () {
     requireAuth(() => {
         CustomersPage();
+    });
+});
+
+router.on("/customers/create", function () {
+    requireAuth(() => {
+        CreateCustomerPage();
     });
 });
 
