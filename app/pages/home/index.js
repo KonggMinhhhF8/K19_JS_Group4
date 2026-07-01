@@ -1,4 +1,4 @@
-import "../../assets/css/home.css";
+// import "../../assets/css/home.css";
 import { get, post, deleteById, patch, put } from "../../api/api.js";
 import { renderHeader, renderStats, renderTable, homeHeader} from '../../utils/index.js';
 
