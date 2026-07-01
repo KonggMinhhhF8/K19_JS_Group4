@@ -1,7 +1,7 @@
 import "../../assets/css/customers.css";
+import { showAlert, showConfirm } from "../../utils/modal";
 import { isAuthenticated } from "../../api/auth.js";
 import router from "../../plugins/router.js";
-
 import { get, post, deleteById, patch, put } from "../../api/api.js";
 import {
     renderHeader,
@@ -14,6 +14,7 @@ import {
 const app = document.getElementById("app");
 
 const CustomersPage = async () => {
+    app.innerHTML = "";
 
     console.log("Customers Page");
     app.innerHTML = "";
@@ -25,49 +26,55 @@ const CustomersPage = async () => {
                 buttonText: "Thêm khách hàng",
                 buttonIcon: "fas fa-plus",
                 buttonClass: "btn-add",
-            }
-        ]
-        
+            },
+        ],
     });
 
-    const stats = await renderStats({
+    const stats = renderStats({
         cardContainer: "stats",
         cards: [
             {
                 cardClass: "card",
                 cardTitle: "Tổng khách hàng",
                 cardContent: "850",
-                cardContentClass: "value",
-                // trend: true,
-                // trendText: "12% so với tháng trước",
-                // trendStats: "up",
-                // trendIcon: "fas fa-arrow-up"
-            },  
+            },
             {
                 cardClass: "card",
                 cardTitle: "Khách hàng mới (Tháng)",
-                cardContent: "42"
+                cardContent: "42",
             },
             {
                 cardClass: "card",
                 cardTitle: "Tỉ lệ quay lại",
-                cardContent: "65%"
+                cardContent: "65%",
             },
-        ]
-        
+        ],
     });
 
-    const getCustomers = async (accessToken) => {
-        console.log("get customers");
+    const container = document.createElement("div");
+    container.className = "container";
 
-        const response = await get("customers", accessToken);
-        console.log(response);
+    const mainContent = document.createElement("main");
+    mainContent.className = "main-content";
 
-        return response;
+    mainContent.append(header, stats);
+
+    container.append(mainContent);
+    app.append(container);
+
+    const editCustomer = (customer) => {
+        router.navigate(`/customers/edit/${customer.id}`);
     };
 
-    const data = await getCustomers();
+    const deleteCustomer = async (customer) => {
+        const confirmed = await showConfirm(
+            "Xác nhận xóa",
+            `Bạn có chắc muốn xóa "${customer.name}"?`,
+        );
 
+        if (!confirmed) return;
+
+        const response = await deleteById("customers", customer.id);
     const table = await renderTable(customerHeader, data, {
             tableContainer: "table-container",
             tableHeader: "table-header",
@@ -123,15 +130,42 @@ const CustomersPage = async () => {
         tableHeaderElement.append(rankFilter);
     }
 
-    const container = document.createElement("div");
-    container.className = "container";
+        if (!response) return;
 
-    const mainContent = document.createElement("main");
-    mainContent.className = "main-content";
+        if (response.error) {
+            await showAlert("Thất bại", response.message);
+            return;
+        }
 
-    mainContent.append(header, stats, table);
+        await showAlert("Thành công", "Đã xóa khách hàng thành công.");
 
-    container.append(mainContent)
+        await loadCustomers();
+    };
+
+    const loadCustomers = async () => {
+        const customers = await get("customers");
+
+        if (!customers) return;
+
+        const oldTable = mainContent.querySelector(".table-container");
+
+        if (oldTable) {
+            oldTable.remove();
+        }
+
+        const table = renderTable(
+            customerHeader,
+            customers,
+            editCustomer,
+            deleteCustomer,
+        );
+
+        mainContent.append(table);
+    };
+
+    await loadCustomers();
+
+    const btnAddCustomer = document.querySelector(".btn-add");
 
     app.innerHTML = "";
     app.append(container);
@@ -139,9 +173,7 @@ const CustomersPage = async () => {
     const btnAddCustomer = document.querySelector(".btn-add");
     btnAddCustomer.addEventListener("click", () => {
         router.navigate("/customers/create");
-        router.resolve();
     });
-
 };
 
 export default CustomersPage;
