@@ -4,6 +4,7 @@ import {
     ProductsPage,
     CustomersPage,
     CreateCustomerPage,
+    EditCustomerPage,
     OrdersPage,
     ReportsPage,
 } from "./pages";
@@ -39,9 +40,15 @@ router.on("/customers", function () {
     });
 });
 
-router.on("/customers/create", function () {
+router.on("/customers/create", () => {
     requireAuth(() => {
         CreateCustomerPage();
+    });
+});
+
+router.on("/customers/edit/:id", ({ data }) => {
+    requireAuth(() => {
+        EditCustomerPage(data.id);
     });
 });
 

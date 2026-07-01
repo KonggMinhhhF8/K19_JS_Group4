@@ -68,6 +68,47 @@ const refreshAccessToken = async () => {
     }
 };
 
+const getNewAccessToken = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (!refreshToken) {
+        logout();
+        return null;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/auth/refresh-token`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ refreshToken }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            logout();
+            return null;
+        }
+
+        const { accessToken, refreshToken: newRefreshToken } = data;
+
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
+
+        return accessToken;
+    } catch (error) {
+        console.error(error);
+        logout();
+        return null;
+    }
+};
+
+const isTokenExpired = (data) => {
+    return data?.message === "token expired";
+};
+
 const isAuthenticated = () => {
     return !!getAccessToken();
 };
@@ -86,6 +127,8 @@ export {
     getAccessToken,
     getRefreshToken,
     refreshAccessToken,
+    getNewAccessToken,
+    isTokenExpired,
     isAuthenticated,
     requireAuth,
 };
