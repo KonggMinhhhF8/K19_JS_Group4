@@ -165,7 +165,6 @@ const CustomersPage = async () => {
 
     await loadCustomers();
 
-    const btnAddCustomer = document.querySelector(".btn-add");
 
     app.innerHTML = "";
     app.append(container);
