@@ -3,8 +3,6 @@ import router from "../../../plugins/router.js";
 import "../../../assets/css/formCustomer.css";
 import { showAlert } from "../../../utils/modal";
 
-const app = document.getElementById("app");
-
 const html = `
 <div class="container">
     <aside class="sidebar">
@@ -105,6 +103,8 @@ const html = `
     </main>
 </div>
 `;
+
+const app = document.getElementById("app");
 
 const FormCustomerPage = async (id = null) => {
     app.innerHTML = html;
