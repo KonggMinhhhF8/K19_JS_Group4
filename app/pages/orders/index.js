@@ -1,4 +1,4 @@
-import {renderHeader, renderStats, renderTable, renderFilter, orderHeader, productHeader} from '../../utils/index.js';
+import { renderHeader, renderStats, renderTable, renderFilter, orderHeader} from '../../utils/index.js';
 import { get } from '../../api/api.js';
 const app = document.getElementById("app");
 
@@ -67,23 +67,15 @@ const OrdersPage = async () => {
     };
 
     const data = await getOrders();
-    const table = await renderTable(productHeader, data, {
-
-            tableContainer: "table-container",
-
-            tableHeader: "product-controls",
-
-        },
-
-        true,
-
-        { title: true,
-
-            titleText: "Danh mục sản phẩm",
-
-            date: false
-
-        })
+    const table = await renderTable(orderHeader, data, {
+        tableContainer: "table-container",
+        tableHeader: "order-controls",
+    },
+    true,
+    {   title: false,
+        tabs: false,
+        date: true
+    })
 
     const orderControls = table.querySelector(".order-controls");
     if (orderControls) {
@@ -98,7 +90,6 @@ const OrdersPage = async () => {
             ],
             onFilterChange: (statusKey) => {
                 console.log("User bấm tab:", statusKey);
-                // Tí nữa ông xử lý lọc mảng `data` theo statusKey ở đây rồi render lại body nhé!
                 const rows = table.querySelectorAll("tbody tr");
 
                 rows.forEach(row => {
