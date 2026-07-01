@@ -179,7 +179,7 @@ const html = `
 
 const OrdersPage = async () => {
     console.log("Orders Page");
-
+    app.innerHTML = "";
     const header = renderHeader({
         input: true,
         placeholderText: "Tìm tên mã đơn, tên khách hàng...",        

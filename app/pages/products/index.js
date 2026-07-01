@@ -5,7 +5,7 @@ const app = document.getElementById("app");
 
 const ProductsPage = async () => {
     console.log("Products Page");
-
+    app.innerHTML = "";
     const header = await renderHeader({
         type: "product",
         input: true,
