@@ -9,7 +9,7 @@ const app = document.getElementById("app");
 const CustomersPage = async () => {
 
     console.log("Customers Page");
-
+    app.innerHTML = "";
     const header = await renderHeader({
         input: true,
         placeholderText: "Tìm tên, email hoặc số điện thoại",
