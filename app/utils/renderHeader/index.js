@@ -1,10 +1,23 @@
 export function renderHeader({
     type = "product",
+    input = false,
     placeholderText,
-    buttonText,
-    buttonIcon,
-    buttonClass,
+    // button = false,
+    // buttonText,
+    // buttonIcon,
+    // buttonClass,
+    showButtons = true,
+    buttons = [
+        {
+           buttonText: "Add product",
+           buttonIcon: "fas fa-plus",
+           buttonClass: ""
+        }
+    ],
     titleText,
+    title = false,
+    innerTitle,
+    iconTitle,
     extraOptions = {},
 }) {
     const mainContent = document.querySelector(".main-content");
@@ -12,35 +25,56 @@ export function renderHeader({
 
     if (type === "product") {
         // Search Bar
-        const divSearchBar = document.createElement("div");
-        divSearchBar.className = "search-bar";
+        if(input) {
+            const divSearchBar = document.createElement("div");
+            divSearchBar.className = "search-bar";
 
-        const searchInput = document.createElement("input");
-        searchInput.type = "text";
-        searchInput.id = "searchInput";
-        searchInput.placeholder = placeholderText;
+            const searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.id = "searchInput";
+            searchInput.placeholder = placeholderText;
 
-        divSearchBar.append(searchInput);
+            divSearchBar.append(searchInput);
+            container.append(divSearchBar)
+        }
 
-        // Button Addition
-        const divButton = document.createElement("div");
-        divButton.className = "user-actions";
+        if(buttons.length > 0 && showButtons) {
+            const divButton = document.createElement("div");
+            divButton.className = "user-actions";
 
-        const addBtn = document.createElement("button");
-        addBtn.className = buttonClass || "btn-add";
+            buttons.forEach(btnConfig => {
+                const addBtn = document.createElement("button");
+                addBtn.className = btnConfig.buttonClass || "btn-add";
 
-        const icon = document.createElement("i");
-        icon.className = buttonIcon;
+                const icon = document.createElement("i");
+                icon.className = btnConfig.buttonIcon;
 
-        const span = document.createElement("span");
-        span.innerText = " " + buttonText;
+                const span = document.createElement("span");
+                span.innerText = " " + btnConfig.buttonText;
 
-        addBtn.append(icon, span);
+                addBtn.append(icon, span);
+                divButton.append(addBtn);
 
-        divButton.append(addBtn);
+            });
+            container.append(divButton);
 
-        // Append
-        container.append(divSearchBar, divButton);
+        }
+
+        if(title) {
+            const divTitle = document.createElement("div");
+            divTitle.className = "user";
+
+            const strongTag = document.createElement("strong");
+            strongTag.innerText = innerTitle + " ";
+
+            const iconTag = document.createElement("i");
+            iconTag.className = iconTitle;
+
+            divTitle.append(strongTag, iconTag);
+
+            container.append(divTitle);
+        }
+        
     }
 
     //Extra Options

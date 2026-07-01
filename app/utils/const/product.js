@@ -36,12 +36,16 @@ const productHeader = [
         formatter: row => {
             if(row.remaining < 10) {
                 const strongTag = document.createElement("strong");
-                const spanWarnTag = document.createElement("span");
-                spanWarnTag.innerText = "(Cảnh báo)"
+                const strongWarnTag = document.createElement("strong");
+                
+                strongWarnTag.innerText = " (Cảnh báo)";
+                strongWarnTag.style.color = "red";
+
                 strongTag.innerText = row.remaining;
                 strongTag.style.color = "red";
+
                 const fragment = document.createDocumentFragment();
-                fragment.append(strongTag, spanWarnTag)
+                fragment.append(strongTag, strongWarnTag)
                 return fragment;
             } 
             return row.remaining;

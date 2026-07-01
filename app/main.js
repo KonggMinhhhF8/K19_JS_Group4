@@ -1,12 +1,13 @@
 import {
-	HomePage,
-	LoginPage,
-	ProductsPage,
-	CustomersPage,
-	OrdersPage,
-	ReportsPage,
+    HomePage,
+    LoginPage,
+    ProductsPage,
+    CustomersPage,
+    CreateCustomerPage,
+    OrdersPage,
+    ReportsPage,
 } from "./pages";
-import { requireAuth } from "./api/auth.js";
+import { isAuthenticated, requireAuth } from "./api/auth.js";
 import router from "./plugins/router.js";
 import "./assets/css/style.css";
 import "./assets/css/reports.css";
@@ -21,7 +22,11 @@ router.on("", function () {
 });
 
 router.on("/login", function () {
-	LoginPage();
+    if (isAuthenticated()) {
+        router.navigate("/");
+        return;
+    }
+    LoginPage();
 });
 
 router.on("/products", function () {
@@ -34,6 +39,12 @@ router.on("/customers", function () {
 	requireAuth(() => {
 		CustomersPage();
 	});
+});
+
+router.on("/customers/create", function () {
+    requireAuth(() => {
+        CreateCustomerPage();
+    });
 });
 
 router.on("/orders", function () {

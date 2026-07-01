@@ -86,5 +86,6 @@ export {
     getAccessToken,
     getRefreshToken,
     refreshAccessToken,
+    isAuthenticated,
     requireAuth,
 };
