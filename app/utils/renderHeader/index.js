@@ -2,10 +2,6 @@ export function renderHeader({
     type = "product",
     input = false,
     placeholderText,
-    // button = false,
-    // buttonText,
-    // buttonIcon,
-    // buttonClass,
     showButtons = true,
     buttons = [
         {
@@ -38,6 +34,8 @@ export function renderHeader({
             container.append(divSearchBar)
         }
 
+
+        // Buttons
         if(buttons.length > 0 && showButtons) {
             const divButton = document.createElement("div");
             divButton.className = "user-actions";
@@ -60,6 +58,7 @@ export function renderHeader({
 
         }
 
+        // Title
         if(title) {
             const divTitle = document.createElement("div");
             divTitle.className = "user";
