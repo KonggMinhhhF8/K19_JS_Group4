@@ -1,5 +1,7 @@
 export { default as HomePage } from "./home";
 export { default as ProductsPage } from "./products";
+export { CreateProductPage } from "./products/create.js";
+export { EditProductPage } from "./products/edit.js";
 export { default as CustomersPage } from "./customers";
 export { CreateCustomerPage } from "./customers/create.js";
 export { EditCustomerPage } from "./customers/edit.js";

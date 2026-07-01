@@ -1,7 +1,7 @@
-import FormCustomerPage from "./formCustomer";
+import formCustomerPage from "./formCustomer";
 
 const EditCustomerPage = (id) => {
-    FormCustomerPage(id);
+    formCustomerPage(id);
 };
 
 export { EditCustomerPage };

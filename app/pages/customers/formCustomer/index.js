@@ -106,7 +106,7 @@ const html = `
 
 const app = document.getElementById("app");
 
-const FormCustomerPage = async (id = null) => {
+const formCustomerPage = async (id = null) => {
     app.innerHTML = html;
 
     const pageTitle = document.getElementById("page-title");
@@ -134,52 +134,49 @@ const FormCustomerPage = async (id = null) => {
 
     const backToCustomers = () => {
         router.navigate("/customers");
-        router.resolve();
     };
 
-    document.getElementById("btn-back").addEventListener("click", (e) => {
+    const btnBack = document.getElementById("btn-back");
+    btnBack.addEventListener("click", (e) => {
         e.preventDefault();
         backToCustomers();
     });
 
-    document
-        .getElementById("btn-cancel")
-        .addEventListener("click", backToCustomers);
+    const btnCancel = document.getElementById("btn-cancel");
+    btnCancel.addEventListener("click", backToCustomers);
 
-    document
-        .getElementById("customerForm")
-        .addEventListener("submit", async (e) => {
-            e.preventDefault();
+    const form = document.getElementById("customerForm");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-            const customer = {
-                name: document.getElementById("name").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                phone: document.getElementById("phone").value.trim(),
-                address:
-                    document.getElementById("address").value.trim() || null,
-                rank: document.getElementById("rank").value,
-            };
+        const customer = {
+            name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            address: document.getElementById("address").value.trim() || null,
+            rank: document.getElementById("rank").value,
+        };
 
-            const response = id
-                ? await put("customers", id, customer)
-                : await post("customers", customer);
+        const response = id
+            ? await put("customers", id, customer)
+            : await post("customers", customer);
 
-            if (!response) return;
+        if (!response) return;
 
-            if (response.error) {
-                await showAlert("Thất bại", response.message);
-                return;
-            }
+        if (response.error) {
+            await showAlert("Thất bại", response.message);
+            return;
+        }
 
-            await showAlert(
-                "Thành công",
-                id
-                    ? "Cập nhật khách hàng thành công."
-                    : "Thêm khách hàng thành công.",
-            );
+        await showAlert(
+            "Thành công",
+            id
+                ? "Cập nhật khách hàng thành công."
+                : "Thêm khách hàng thành công.",
+        );
 
-            backToCustomers();
-        });
+        backToCustomers();
+    });
 };
 
-export default FormCustomerPage;
+export default formCustomerPage;
