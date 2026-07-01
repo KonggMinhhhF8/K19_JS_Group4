@@ -1,3 +1,11 @@
+import {
+	loadReport,
+	renderStatistic,
+	renderRevenueChart,
+	renderCategoryChart,
+	renderTopProducts,
+} from "./reports.js";
+
 const app = document.getElementById("app");
 
 const html = `
@@ -90,37 +98,27 @@ const html = `
                                 <th>Tình trạng</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>iPhone 15 Pro Max</td>
-                                <td>45</td>
-                                <td>1.450.000.000đ</td>
-                                <td>
-                                    <span style="color: var(--success)"
-                                        >Còn hàng</span
-                                    >
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>AirPods Pro 2</td>
-                                <td>120</td>
-                                <td>660.000.000đ</td>
-                                <td>
-                                    <span style="color: var(--danger)"
-                                        >Sắp hết</span
-                                    >
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </main>
         </div>
 `;
 
-const ReportsPage = () => {
-    console.log("Reports Page");
-    app.innerHTML = html;
+const ReportsPage = async () => {
+	console.log("Reports Page");
+
+	app.innerHTML = html;
+
+	const { orders, customers, products } = await loadReport();
+
+	renderStatistic(orders, customers);
+
+	renderRevenueChart(orders);
+
+	renderCategoryChart(products);
+
+	renderTopProducts(orders);
 };
 
 export default ReportsPage;
