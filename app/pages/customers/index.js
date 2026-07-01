@@ -16,7 +16,7 @@ const app = document.getElementById("app");
 const CustomersPage = async () => {
 
     console.log("Customers Page");
-
+    app.innerHTML = "";
     const header = await renderHeader({
         input: true,
         placeholderText: "Tìm tên, email hoặc số điện thoại",
@@ -136,7 +136,7 @@ const CustomersPage = async () => {
     app.innerHTML = "";
     app.append(container);
 
-    const btnAddCustomer = document.getElementById("btn-add-customer");
+    const btnAddCustomer = document.querySelector(".btn-add");
     btnAddCustomer.addEventListener("click", () => {
         router.navigate("/customers/create");
         router.resolve();

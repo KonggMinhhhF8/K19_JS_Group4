@@ -7,7 +7,7 @@ const app = document.getElementById("app");
 
 const HomePage = async () => {
     console.log("Home Page");
-
+    app.innerHTML = "";
     const header = await renderHeader({
         input: false,
         showButtons: false,
