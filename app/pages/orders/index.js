@@ -78,6 +78,7 @@ const OrdersPage = async () => {
     })
 
     const orderControls = table.querySelector(".order-controls");
+    console.log(">>> Check biến orderControls trong code:", orderControls);
     if (orderControls) {
 
         const filterTabs = renderFilter({
@@ -119,7 +120,7 @@ const OrdersPage = async () => {
             }
         });
 
-
+        console.log(">>> Check biến filterTabs trong code:", filterTabs);
         orderControls.prepend(filterTabs);
     }
 
