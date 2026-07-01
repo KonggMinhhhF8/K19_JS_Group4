@@ -67,11 +67,11 @@ const OrdersPage = async () => {
     };
 
     const data = await getOrders();
-    const table = await renderTable(productHeader, data, {
+    const table = await renderTable(orderHeader, data, {
 
             tableContainer: "table-container",
 
-            tableHeader: "product-controls",
+            tableHeader: "table-header",
 
         },
 
@@ -85,7 +85,7 @@ const OrdersPage = async () => {
 
         })
 
-    const orderControls = table.querySelector(".order-controls");
+    const orderControls = table.querySelector(".table-header");
     if (orderControls) {
 
         const filterTabs = renderFilter({
@@ -129,7 +129,7 @@ const OrdersPage = async () => {
         });
 
 
-        orderControls.prepend(filterTabs);
+        orderControls.append(filterTabs);
     }
 
     const container = document.createElement("div");
