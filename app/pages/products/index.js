@@ -62,7 +62,16 @@ const ProductsPage = async () => {
     };
     const data = await getProducts();
 
-    const table = await renderTable(productHeader, data, {
+    const editProduct = () => {
+        
+    }
+    const deleteProduct = () => {
+        
+    }
+
+    const table = await renderTable(productHeader, data, editProduct,
+            deleteProduct,
+        {
             tableContainer: "table-container",
             tableHeader: "table-header",
         },

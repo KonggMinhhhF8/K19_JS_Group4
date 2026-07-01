@@ -39,7 +39,7 @@ export function renderTable(
         const tableTitle = document.createElement("h3");
         tableTitle.innerText = extraConfig.titleText;
         tableHeader.append(tableTitle);
-    }
+    } 
 
     if (extraConfig.tabs) {
         const divTabs = document.createElement("div");
