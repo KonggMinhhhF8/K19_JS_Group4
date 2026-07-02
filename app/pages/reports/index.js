@@ -5,6 +5,7 @@ import {
 	renderCategoryChart,
 	renderTopProducts,
 } from "./reports.js";
+import {renderSidebar} from "../../utils/index.js";
 
 const app = document.getElementById("app");
 
@@ -99,6 +100,11 @@ const ReportsPage = async () => {
 	console.log("Reports Page");
 
 	app.innerHTML = html;
+
+	// Thêm sidebar
+	const container = app.querySelector(".container");
+	const sidebar = renderSidebar("reports");///////
+	container.prepend(sidebar);
 
 	const { orders, customers, products } = await loadReport();
 

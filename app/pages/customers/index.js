@@ -3,6 +3,7 @@ import {
     renderStats,
     renderTable,
     renderFilter,
+    renderSidebar,
     customerHeader,
     productHeader,
 } from "../../utils/index.js";
@@ -52,12 +53,14 @@ const CustomersPage = async () => {
     const container = document.createElement("div");
     container.className = "container";
 
+    const sidebar = renderSidebar("customers");///////
+
     const mainContent = document.createElement("main");
     mainContent.className = "main-content";
 
     mainContent.append(header, stats);
 
-    container.append(mainContent);
+    container.append(sidebar, mainContent); //////////
 
     const editCustomer = (customer) => {
         router.navigate(`/customers/edit/${customer.id}`);

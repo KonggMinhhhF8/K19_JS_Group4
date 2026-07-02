@@ -2,22 +2,22 @@ import { get, post, put } from "../../../api/api.js";
 import router from "../../../plugins/router.js";
 import "../../../assets/css/formCustomer.css";
 import { showAlert } from "../../../utils/modal";
-
+import {renderSidebar} from "../../../utils";
 const html = `
 <div class="container">
-    <aside class="sidebar">
-        <h2>ShopAdmin</h2>
+<!--    <aside class="sidebar">-->
+<!--        <h2>ShopAdmin</h2>-->
 
-        <ul>
-            <li><i class="fas fa-home"></i> Tổng quan</li>
-            <li><i class="fas fa-box"></i> Sản phẩm</li>
-            <li><i class="fas fa-shopping-cart"></i> Đơn hàng</li>
-            <li class="active">
-                <i class="fas fa-users"></i> Khách hàng
-            </li>
-            <li><i class="fas fa-chart-line"></i> Báo cáo</li>
-        </ul>
-    </aside>
+<!--        <ul>-->
+<!--            <li><i class="fas fa-home"></i> Tổng quan</li>-->
+<!--            <li><i class="fas fa-box"></i> Sản phẩm</li>-->
+<!--            <li><i class="fas fa-shopping-cart"></i> Đơn hàng</li>-->
+<!--            <li class="active">-->
+<!--                <i class="fas fa-users"></i> Khách hàng-->
+<!--            </li>-->
+<!--            <li><i class="fas fa-chart-line"></i> Báo cáo</li>-->
+<!--        </ul>-->
+<!--    </aside>-->
 
     <main class="main-content">
         <div class="header-actions">
@@ -108,6 +108,11 @@ const app = document.getElementById("app");
 
 const formCustomerPage = async (id = null) => {
     app.innerHTML = html;
+
+    // Thêm sidebar
+    const container = app.querySelector(".container");
+    const sidebar = renderSidebar("customers");///////
+    container.prepend(sidebar);
 
     const pageTitle = document.getElementById("page-title");
     const btnSave = document.getElementById("btn-save");

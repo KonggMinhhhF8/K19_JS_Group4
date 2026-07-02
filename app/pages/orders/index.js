@@ -3,6 +3,7 @@ import {
     renderStats,
     renderTable,
     renderFilter,
+    renderSidebar,
     orderHeader
 } from '../../utils/index.js';
 import { get, deleteById } from '../../api/api.js';
@@ -62,18 +63,20 @@ const OrdersPage = async () => {
     const container = document.createElement("div");
     container.className = "container";
 
+    const sidebar = renderSidebar("orders");///////
+
     const mainContent = document.createElement('main');
     mainContent.className = "main-content";
 
     mainContent.append(header, stats);
-    container.append(mainContent);
+    container.append(sidebar, mainContent);//////
 
-    // 1. Hàm xử lý khi bấm nút Sửa đơn hàng
+    // Hàm xử lý khi bấm nút Sửa đơn hàng
     const editOrder = (order) => {
         router.navigate(`/orders/edit/${order.id}`);
     };
 
-    // 2. Hàm xử lý khi bấm nút Xóa đơn hàng
+    // Hàm xử lý khi bấm nút Xóa đơn hàng
     const deleteOrder = async (order) => {
         const confirmed = await showConfirm(
             "Xác nhận xóa đơn",
@@ -93,11 +96,10 @@ const OrdersPage = async () => {
 
         showAlert("Thành công", `Đã xóa thành công đơn hàng #${order.id}`);
 
-        // Gọi lại hàm load danh sách để cập nhật UI ngay lập tức
         await loadOrders();
     };
 
-    // 3. Hàm tải dữ liệu và render bảng (Có chứa bộ lọc Tabs)
+    //  Hàm tải dữ liệu và render bảng (Có chứa bộ lọc Tabs)
     const loadOrders = async () => {
         const data = await get("orders");
         if (!data) return;
@@ -108,18 +110,17 @@ const OrdersPage = async () => {
             oldTable.remove();
         }
 
-        // Truyền đầy đủ 7 tham số theo đúng thiết kế của renderTable
         const table = await renderTable(
-            orderHeader,  // 1. headers
-            data,         // 2. rows
-            editOrder,    // 3. onEdit callback
-            deleteOrder,  // 4. onDelete callback
-            {             // 5. tableClass
+            orderHeader,
+            data,
+            editOrder,
+            deleteOrder,
+            {
                 tableContainer: "table-container",
                 tableHeader: "order-controls",
             },
-            true,         // 6. action (Bật cột Thao tác Sửa / Xóa)
-            {             // 7. extraConfig
+            true,
+            {
                 title: false,
                 tabs: false,
                 date: true
@@ -172,7 +173,6 @@ const OrdersPage = async () => {
         mainContent.append(table);
     };
 
-    // Thực hiện tải dữ liệu đơn hàng lần đầu
     await loadOrders();
 
     app.innerHTML = "";

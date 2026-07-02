@@ -4,7 +4,7 @@ import {
     renderHeader,
     renderStats,
     renderTable,
-    homeHeader,
+    homeHeader, renderSidebar,
 } from "../../utils/index.js";
 
 const app = document.getElementById("app");
@@ -72,7 +72,10 @@ const HomePage = async () => {
     mainContent.append(header, stats, table);
     const container = document.createElement("div");
     container.className = "container";
-    container.append(mainContent);
+
+    const sidebar = renderSidebar("dashboard");/////////////
+
+    container.append(sidebar, mainContent);
     app.append(container);
 };
 

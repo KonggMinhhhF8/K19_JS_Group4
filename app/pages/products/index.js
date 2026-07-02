@@ -2,9 +2,9 @@ import {
     renderHeader,
     renderStats,
     renderTable,
+    renderSidebar,
     renderFilter,
     productHeader,
-    orderHeader,
 } from "../../utils/index.js";
 import router from "../../plugins/router.js";
 import { showAlert, showConfirm } from "../../utils/modal";
@@ -64,12 +64,14 @@ const ProductsPage = async () => {
     const container = document.createElement("div");
     container.className = "container";
 
+    const sidebar = renderSidebar("products");///////
+
     const mainContent = document.createElement("main");
     mainContent.className = "main-content";
 
     mainContent.append(header, stats);
 
-    container.append(mainContent);
+    container.append(sidebar, mainContent);/////////
 
     const editProduct = (product) => {
         router.navigate(`/products/edit/${product.id}`);
