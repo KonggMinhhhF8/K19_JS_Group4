@@ -5,23 +5,24 @@ import {
 	renderCategoryChart,
 	renderTopProducts,
 } from "./reports.js";
+import {renderSidebar} from "../../utils/index.js";
 
 const app = document.getElementById("app");
 
 const html = `
      <div class="container">
-            <aside class="sidebar">
-                <h2>ShopAdmin</h2>
-                <ul>
-                    <li><i class="fas fa-home"></i> Tổng quan</li>
-                    <li><i class="fas fa-box"></i> Sản phẩm</li>
-                    <li><i class="fas fa-shopping-cart"></i> Đơn hàng</li>
-                    <li><i class="fas fa-users"></i> Khách hàng</li>
-                    <li class="active">
-                        <i class="fas fa-chart-line"></i> Báo cáo
-                    </li>
-                </ul>
-            </aside>
+<!--            <aside class="sidebar">-->
+<!--                <h2>ShopAdmin</h2>-->
+<!--                <ul>-->
+<!--                    <li><i class="fas fa-home"></i> Tổng quan</li>-->
+<!--                    <li><i class="fas fa-box"></i> Sản phẩm</li>-->
+<!--                    <li><i class="fas fa-shopping-cart"></i> Đơn hàng</li>-->
+<!--                    <li><i class="fas fa-users"></i> Khách hàng</li>-->
+<!--                    <li class="active">-->
+<!--                        <i class="fas fa-chart-line"></i> Báo cáo-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </aside>-->
 
             <main class="main-content">
                 <header>
@@ -109,6 +110,11 @@ const ReportsPage = async () => {
 	console.log("Reports Page");
 
 	app.innerHTML = html;
+
+	// Thêm sidebar
+	const container = app.querySelector(".container");
+	const sidebar = renderSidebar("reports");///////
+	container.prepend(sidebar);
 
 	const { orders, customers, products } = await loadReport();
 
