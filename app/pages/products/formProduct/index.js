@@ -3,22 +3,10 @@ import router from "../../../plugins/router.js";
 import "../../../assets/css/formCustomer.css";
 import { showAlert } from "../../../utils/modal";
 import { getCategories } from "../../../api/category.js";
-import {renderSidebar} from "../../../utils";
+import { renderSidebar } from "../../../utils";
 
 const html = `
 <div class="container">
-<!--    <aside class="sidebar">-->
-<!--        <h2>ShopAdmin</h2>-->
-
-<!--        <ul>-->
-<!--            <li><i class="fas fa-home"></i> Tổng quan</li>-->
-<!--            <li class="active"><i class="fas fa-box"></i> Sản phẩm</li>-->
-<!--            <li><i class="fas fa-shopping-cart"></i> Đơn hàng</li>-->
-<!--            <li><i class="fas fa-users"></i> Khách hàng</li>-->
-<!--            <li><i class="fas fa-chart-line"></i> Báo cáo</li>-->
-<!--        </ul>-->
-<!--    </aside>-->
-
     <main class="main-content">
         <div class="header-actions">
             <a href="/products" id="btn-back" class="btn-back">
@@ -115,7 +103,7 @@ const formProductPage = async (id = null) => {
 
     // Thêm Sidebar
     const container = app.querySelector(".container");
-    const sidebar = renderSidebar("products");///////
+    const sidebar = renderSidebar("products"); ///////
     container.prepend(sidebar);
 
     const pageTitle = document.getElementById("page-title");
