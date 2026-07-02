@@ -45,10 +45,15 @@ const HomePage = async () => {
         return response;
     };
 
+    const onEdit = () => {};
+    const onDelete = () => {};
+
     const data = await getHome();
     const table = await renderTable(
         homeHeader,
         data,
+        onEdit,
+        onDelete,
         {
             tableContainer: "table-section",
             tableHeader: "table-title",
