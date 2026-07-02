@@ -12,7 +12,7 @@
     font-family: "Segoe UI", sans-serif;
 }
 
-body {
+.login-container {
     background: var(--bg-color);
     display: flex;
     justify-content: center;
@@ -109,7 +109,7 @@ body {
     text-decoration: underline;
 }
 
-button {
+#loginForm button {
     width: 100%;
     border: none;
     padding: 14px;
@@ -122,7 +122,7 @@ button {
     transition: 0.25s;
 }
 
-button:hover {
+#loginForm button:hover {
     background: #2980b9;
 }
 

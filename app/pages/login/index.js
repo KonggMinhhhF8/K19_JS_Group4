@@ -66,7 +66,10 @@ const html = `
 `;
 
 const LoginPage = () => {
-    app.innerHTML = html;
+    const container = document.createElement("div");
+    container.classList.add("login-container");
+    app.appendChild(container);
+    container.innerHTML = html;
 
     const form = document.getElementById("loginForm");
     const errorElement = document.getElementById("login-error");
