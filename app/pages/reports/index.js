@@ -76,7 +76,9 @@ const html = `
                 </div>
 
                 <div class="top-products">
-                    <h3>Sản phẩm bán chạy nhất</h3>
+                    <div class="table-header">
+                        <h3>Sản phẩm bán chạy nhất</h3>
+                    </div>
                     <table>
                         <thead>
                             <tr>
