@@ -1,13 +1,23 @@
-import { renderHeader, renderStats, renderTable, renderFilter, orderHeader} from '../../utils/index.js';
-import { get } from '../../api/api.js';
+import {
+    renderHeader,
+    renderStats,
+    renderTable,
+    renderFilter,
+    orderHeader
+} from '../../utils/index.js';
+import { get, deleteById } from '../../api/api.js';
+import router from "../../plugins/router.js";
+import { showAlert, showConfirm } from "../../utils/modal";
+
 const app = document.getElementById("app");
 
 const OrdersPage = async () => {
     console.log("Orders Page");
     app.innerHTML = "";
+
     const header = renderHeader({
         input: true,
-        placeholderText: "Tìm tên mã đơn, tên khách hàng...",        
+        placeholderText: "Tìm tên mã đơn, tên khách hàng...",
         buttons: [
             {
                 buttonText: "Thêm order",
@@ -19,10 +29,8 @@ const OrdersPage = async () => {
                 buttonIcon: "fa-solid fa-file-export",
                 buttonClass: "btn-export",
             },
-            
         ]
-       
-    })
+    });
 
     const stats = renderStats({
         cardContainer: "stats",
@@ -32,11 +40,7 @@ const OrdersPage = async () => {
                 cardTitle: "Tổng đơn hàng",
                 cardContent: "1,024",
                 cardContentClass: "value",
-                // trend: true,
-                // trendText: "12% so với tháng trước",
-                // trendStats: "up",
-                // trendIcon: "fas fa-arrow-up"
-            },  
+            },
             {
                 cardClass: "card orange",
                 cardTitle: "Đang xử lý",
@@ -53,89 +57,134 @@ const OrdersPage = async () => {
                 cardContent: "29"
             },
         ]
-        
-    })
-
-
-    const getOrders = async (accessToken) => {
-        console.log("get orders");
-
-        const response = await get("orders", accessToken);
-        console.log(response);
-
-        return response;
-    };
-
-    const data = await getOrders();
-    const table = await renderTable(orderHeader, data, {
-        tableContainer: "table-container",
-        tableHeader: "order-controls",
-    },
-    true,
-    {   title: false,
-        tabs: false,
-        date: true
-    })
-
-    const orderControls = table.querySelector(".order-controls");
-    console.log(">>> Check biến orderControls trong code:", orderControls);
-    if (orderControls) {
-
-        const filterTabs = renderFilter({
-            type: "tabs",
-            options: [
-                { key: "all", label: "Tất cả" },
-                { key: "pending", label: "Chờ xử lý" },
-                { key: "shipping", label: "Đang giao" },
-                { key: "done", label: "Đã xong" },
-            ],
-            onFilterChange: (statusKey) => {
-                console.log("User bấm tab:", statusKey);
-                const rows = table.querySelectorAll("tbody tr");
-
-                rows.forEach(row => {
-                    // Lấy ô chứa Trạng thái là cột thứ 5 trong bảng
-                    const statusCell = row.querySelector("td:nth-child(5)");
-                    if (!statusCell) return;
-
-                    // Lấy chữ viết hoa bên trong cột trạng thái
-                    const statusText = statusCell.innerText.trim().toUpperCase();
-
-                    if (statusKey === "all") {
-                        row.style.display = ""; // thỏa mãn thì giữ nguyên hiển thị ban đầu
-                    }
-                    else if (statusKey === "pending" && statusText === "CHỜ XỬ LÝ") {
-                        row.style.display = "";
-                    }
-                    else if (statusKey === "shipping" && statusText === "ĐANG GIAO") {
-                        row.style.display = "";
-                    }
-                    else if (statusKey === "done" && statusText === "HOÀN THÀNH") {
-                        row.style.display = "";
-                    }
-                    else {
-                        row.style.display = "none"; // Không thỏa mãn thì ẩn dòng đó đi
-                    }
-                });
-            }
-        });
-
-        console.log(">>> Check biến filterTabs trong code:", filterTabs);
-        orderControls.prepend(filterTabs);
-    }
+    });
 
     const container = document.createElement("div");
     container.className = "container";
 
     const mainContent = document.createElement('main');
-    mainContent.className = "main-content"
+    mainContent.className = "main-content";
 
-    mainContent.append(header, stats, table)
-
+    mainContent.append(header, stats);
     container.append(mainContent);
-    
+
+    // 1. Hàm xử lý khi bấm nút Sửa đơn hàng
+    const editOrder = (order) => {
+        router.navigate(`/orders/edit/${order.id}`);
+    };
+
+    // 2. Hàm xử lý khi bấm nút Xóa đơn hàng
+    const deleteOrder = async (order) => {
+        const confirmed = await showConfirm(
+            "Xác nhận xóa đơn",
+            `Bạn có chắc chắn muốn xóa đơn hàng #${order.id}?`
+        );
+
+        if (!confirmed) return;
+
+        const response = await deleteById("orders", order.id);
+
+        if (!response) return;
+
+        if (response.error) {
+            await showAlert("Thất bại", response.message);
+            return;
+        }
+
+        showAlert("Thành công", `Đã xóa thành công đơn hàng #${order.id}`);
+
+        // Gọi lại hàm load danh sách để cập nhật UI ngay lập tức
+        await loadOrders();
+    };
+
+    // 3. Hàm tải dữ liệu và render bảng (Có chứa bộ lọc Tabs)
+    const loadOrders = async () => {
+        const data = await get("orders");
+        if (!data) return;
+
+        // Xóa bảng cũ nếu có trước khi chèn bảng mới (tránh bị lặp bảng khi xóa xong)
+        const oldTable = mainContent.querySelector(".table-container");
+        if (oldTable) {
+            oldTable.remove();
+        }
+
+        // Truyền đầy đủ 7 tham số theo đúng thiết kế của renderTable
+        const table = await renderTable(
+            orderHeader,  // 1. headers
+            data,         // 2. rows
+            editOrder,    // 3. onEdit callback
+            deleteOrder,  // 4. onDelete callback
+            {             // 5. tableClass
+                tableContainer: "table-container",
+                tableHeader: "order-controls",
+            },
+            true,         // 6. action (Bật cột Thao tác Sửa / Xóa)
+            {             // 7. extraConfig
+                title: false,
+                tabs: false,
+                date: true
+            }
+        );
+
+        // Chèn bộ lọc Tabs vào order-controls
+        const orderControls = table.querySelector(".order-controls");
+        if (orderControls) {
+            const filterTabs = renderFilter({
+                type: "tabs",
+                options: [
+                    { key: "all", label: "Tất cả" },
+                    { key: "pending", label: "Chờ xử lý" },
+                    { key: "shipping", label: "Đang giao" },
+                    { key: "done", label: "Đã xong" },
+                ],
+                onFilterChange: (statusKey) => {
+                    console.log("User bấm tab:", statusKey);
+                    const rows = table.querySelectorAll("tbody tr");
+
+                    rows.forEach(row => {
+                        const statusCell = row.querySelector("td:nth-child(5)");
+                        if (!statusCell) return;
+
+                        const statusText = statusCell.innerText.trim().toUpperCase();
+
+                        if (statusKey === "all") {
+                            row.style.display = "";
+                        }
+                        else if (statusKey === "pending" && statusText === "CHỜ XỬ LÝ") {
+                            row.style.display = "";
+                        }
+                        else if (statusKey === "shipping" && statusText === "ĐANG GIAO") {
+                            row.style.display = "";
+                        }
+                        else if (statusKey === "done" && statusText === "HOÀN THÀNH") {
+                            row.style.display = "";
+                        }
+                        else {
+                            row.style.display = "none";
+                        }
+                    });
+                }
+            });
+
+            orderControls.prepend(filterTabs);
+        }
+
+        mainContent.append(table);
+    };
+
+    // Thực hiện tải dữ liệu đơn hàng lần đầu
+    await loadOrders();
+
     app.innerHTML = "";
     app.append(container);
+
+    // Sự kiện chuyển trang cho nút Thêm order
+    const btnAdd = document.querySelector(".btn-add");
+    if (btnAdd) {
+        btnAdd.addEventListener("click", () => {
+            router.navigate("/orders/create");
+        });
+    }
 };
 
 export default OrdersPage;
