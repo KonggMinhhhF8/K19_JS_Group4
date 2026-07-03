@@ -1,4 +1,5 @@
 import router from "../../plugins/router";
+import {logout} from "../../api/auth";
 export const renderSidebar = (activeId) => {
 
     const menuItems = [
@@ -41,7 +42,20 @@ export const renderSidebar = (activeId) => {
         ul.append(li);
     });
 
+    const logoutButton = document.createElement("li");
+    logoutButton.className = "sidebar-logout";
+    const logoutIcon = document.createElement("i");
+    logoutIcon.className = "fas fa-sign-out-alt";
+    logoutButton.append(logoutIcon, " Đăng xuất");
+    ul.append(logoutButton);
+
     aside.append(ul);
+
+    // Đăng xuất
+
+    logoutButton.addEventListener("click", () => {
+        logout();
+    })
 
     return aside;
 };
