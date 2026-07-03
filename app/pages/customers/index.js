@@ -4,8 +4,8 @@ import {
     renderTable,
     renderFilter,
     renderSidebar,
+    getStatsConfig,
     customerHeader,
-    productHeader,
 } from "../../utils/index.js";
 import router from "../../plugins/router.js";
 import { showAlert, showConfirm } from "../../utils/modal";
@@ -17,6 +17,7 @@ const app = document.getElementById("app");
 const CustomersPage = async () => {
     app.innerHTML = "";
 
+    // 1. Khởi tạo Header thanh tìm kiếm và nút chức năng
     const header = await renderHeader({
         input: true,
         placeholderText: "Tìm tên, email hoặc số điện thoại",
@@ -29,43 +30,24 @@ const CustomersPage = async () => {
         ],
     });
 
-    const stats = renderStats({
-        cardContainer: "stats",
-        cards: [
-            {
-                cardClass: "card",
-                cardTitle: "Tổng khách hàng",
-                cardContent: "850",
-            },
-            {
-                cardClass: "card",
-                cardTitle: "Khách hàng mới (Tháng)",
-                cardContent: "42",
-            },
-            {
-                cardClass: "card",
-                cardTitle: "Tỉ lệ quay lại",
-                cardContent: "65%",
-            },
-        ],
-    });
-
     const container = document.createElement("div");
     container.className = "container";
 
-    const sidebar = renderSidebar("customers");///////
+    const sidebar = renderSidebar("customers");
 
     const mainContent = document.createElement("main");
     mainContent.className = "main-content";
 
-    mainContent.append(header, stats);
+    // Ban đầu chỉ append header, khối stats sẽ render động theo dữ liệu thực tế
+    mainContent.append(header);
+    container.append(sidebar, mainContent);
 
-    container.append(sidebar, mainContent); //////////
-
+    // Hàm xử lý khi bấm nút Sửa khách hàng
     const editCustomer = (customer) => {
         router.navigate(`/customers/edit/${customer.id}`);
     };
 
+    // Hàm xử lý khi bấm nút Xóa khách hàng
     const deleteCustomer = async (customer) => {
         const confirmed = await showConfirm(
             "Xác nhận xóa",
@@ -85,16 +67,38 @@ const CustomersPage = async () => {
 
         showAlert("Thành công", "Đã xóa khách hàng thành công.");
 
+        // Gọi lại hàm để cập nhật lại bảng và làm mới số liệu Stats giảm xuống
         await loadCustomers();
     };
 
+    // Hàm tải dữ liệu, tự động tính số liệu khách hàng và render giao diện
     const loadCustomers = async () => {
         const customers = await get("customers");
-
         if (!customers) return;
 
-        const oldTable = mainContent.querySelector(".table-container");
+        // --- XỬ LÝ UPDATE KHỐI SỐ LIỆU (STATS) TỰ ĐỘNG ---
+        const oldStats = mainContent.querySelector(".stats");
+        if (oldStats) {
+            oldStats.remove();
+        }
 
+        // Lấy cấu hình mảng card tính toán tự động từ API khách hàng
+        const statsCards = getStatsConfig("customers", customers);
+        const stats = renderStats({
+            cardContainer: "stats",
+            cards: statsCards
+        });
+
+        // Chèn khối stats vào ngay sau header để đúng thứ tự UI
+        if (header.nextSibling) {
+            mainContent.insertBefore(stats, header.nextSibling);
+        } else {
+            mainContent.append(stats);
+        }
+        // -------------------------------------------------
+
+        // --- XỬ LÝ RENDER BẢNG DỮ LIỆU ---
+        const oldTable = mainContent.querySelector(".table-container");
         if (oldTable) {
             oldTable.remove();
         }
@@ -116,6 +120,7 @@ const CustomersPage = async () => {
             },
         );
 
+        // Chèn bộ lọc phân hạng vào table-header
         const tableHeaderElement = table.querySelector(".table-header");
         if (tableHeaderElement) {
             const rankFilter = renderFilter({
@@ -134,9 +139,7 @@ const CustomersPage = async () => {
                         const rankCell = row.querySelector("td:nth-child(3)");
                         if (!rankCell) return;
 
-                        const rankText = rankCell.innerText
-                            .trim()
-                            .toUpperCase();
+                        const rankText = rankCell.innerText.trim().toUpperCase();
 
                         if (selectedRank === "all") {
                             row.style.display = "";
@@ -168,15 +171,18 @@ const CustomersPage = async () => {
         mainContent.append(table);
     };
 
+    // Tải dữ liệu lần đầu khi khởi tạo trang
     await loadCustomers();
 
     app.append(container);
 
+    // Sự kiện chuyển trang cho nút Thêm khách hàng
     const btnAdd = document.querySelector(".btn-add");
-
-    btnAdd.addEventListener("click", () => {
-        router.navigate("/customers/create");
-    });
+    if (btnAdd) {
+        btnAdd.addEventListener("click", () => {
+            router.navigate("/customers/create");
+        });
+    }
 };
 
 export default CustomersPage;
