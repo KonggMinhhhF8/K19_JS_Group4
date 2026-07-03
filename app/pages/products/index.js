@@ -4,6 +4,7 @@ import {
     renderTable,
     renderSidebar,
     renderFilter,
+    getStatsConfig,
     productHeader,
 } from "../../utils/index.js";
 import router from "../../plugins/router.js";
@@ -14,6 +15,7 @@ const app = document.getElementById("app");
 
 const ProductsPage = async () => {
     app.innerHTML = "";
+
 
     const header = await renderHeader({
         type: "product",
@@ -26,52 +28,18 @@ const ProductsPage = async () => {
                 buttonClass: "btn-add",
             },
         ],
-
-        // extraOptions: {
-        //     filterClass: "filter-group",
-        //     dateStart: "2026-01-01",
-        //     dateEnd: "2026-01-24",
-        //     filterText: "Lọc"
-        // }
-    });
-
-    const stats = await renderStats({
-        cardContainer: "stats",
-        cards: [
-            {
-                cardClass: "card",
-                cardTitle: "Tổng sản phẩm",
-                cardContent: "1240",
-                cardContentClass: "value",
-                // trend: true,
-                // trendText: "12% so với tháng trước",
-                // trendStats: "up",
-                // trendIcon: "fas fa-arrow-up"
-            },
-            {
-                cardClass: "card",
-                cardTitle: "Sắp hết hàng",
-                cardContent: "12",
-            },
-            {
-                cardClass: "card",
-                cardTitle: "Danh mục",
-                cardContent: "15",
-            },
-        ],
     });
 
     const container = document.createElement("div");
     container.className = "container";
 
-    const sidebar = renderSidebar("products");///////
+    const sidebar = renderSidebar("products");
 
     const mainContent = document.createElement("main");
     mainContent.className = "main-content";
 
-    mainContent.append(header, stats);
-
-    container.append(sidebar, mainContent);/////////
+    mainContent.append(header);
+    container.append(sidebar, mainContent);
 
     const editProduct = (product) => {
         router.navigate(`/products/edit/${product.id}`);
@@ -94,18 +62,39 @@ const ProductsPage = async () => {
             return;
         }
 
-        showAlert("Thành công", `Đã xóa thành công"${product.name}"`);
+        showAlert("Thành công", `Đã xóa thành công "${product.name}"`);
 
+        // Gọi lại hàm để cập nhật lại bảng và làm mới số liệu Stats giảm xuống
         await loadProducts();
     };
 
+    // Hàm tải dữ liệu, tự động tính số liệu sản phẩm và render giao diện
     const loadProducts = async () => {
         const products = await get("products");
-
         if (!products) return;
 
-        const oldTable = mainContent.querySelector(".table-container");
+        //update stats
+        const oldStats = mainContent.querySelector(".stats");
+        if (oldStats) {
+            oldStats.remove();
+        }
 
+        // gọi hàm tính stats
+        const statsCards = getStatsConfig("products", products);
+        const stats = await renderStats({
+            cardContainer: "stats",
+            cards: statsCards
+        });
+
+        // Chèn stats
+        if (header.nextSibling) {
+            mainContent.insertBefore(stats, header.nextSibling);
+        } else {
+            mainContent.append(stats);
+        }
+
+        // RENDER BẢNG DỮ LIỆU
+        const oldTable = mainContent.querySelector(".table-container");
         if (oldTable) {
             oldTable.remove();
         }
@@ -128,6 +117,7 @@ const ProductsPage = async () => {
             },
         );
 
+        // Chèn bộ lọc Select vào table-header
         const tableHeaderElement = table.querySelector(".table-header");
         if (tableHeaderElement) {
             const categoryFilter = renderFilter({
@@ -143,14 +133,10 @@ const ProductsPage = async () => {
 
                     const rows = table.querySelectorAll("tbody tr");
                     rows.forEach((row) => {
-                        // Cột Danh mục đứng ở vị trí thứ 3
-                        const categoryCell =
-                            row.querySelector("td:nth-child(3)");
+                        const categoryCell = row.querySelector("td:nth-child(3)");
                         if (!categoryCell) return;
 
-                        const categoryText = categoryCell.innerText
-                            .trim()
-                            .toUpperCase();
+                        const categoryText = categoryCell.innerText.trim().toUpperCase();
 
                         if (selectedCategory === "all") {
                             row.style.display = "";
@@ -182,15 +168,18 @@ const ProductsPage = async () => {
         mainContent.append(table);
     };
 
+    // Tải dữ liệu lần đầu khi khởi tạo trang
     await loadProducts();
 
     app.append(container);
 
+    // Sự kiện chuyển trang cho nút Thêm sản phẩm
     const btnAdd = document.querySelector(".btn-add");
-
-    btnAdd.addEventListener("click", () => {
-        router.navigate("/products/create");
-    });
+    if (btnAdd) {
+        btnAdd.addEventListener("click", () => {
+            router.navigate("/products/create");
+        });
+    }
 };
 
 export default ProductsPage;
