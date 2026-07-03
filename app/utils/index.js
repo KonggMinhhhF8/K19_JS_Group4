@@ -12,3 +12,5 @@ export { orderHeader } from "./const/order.js";
 export { formatPhone } from "./formatPhone/index.js";
 export { formatNameInitials } from "./formatNameInititals/index.js";
 export { formatVND } from "./formatVND/index.js"
+
+export { getStatsConfig } from "./statsCalculator/index.js"
