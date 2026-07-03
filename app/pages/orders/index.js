@@ -4,6 +4,7 @@ import {
     renderTable,
     renderFilter,
     renderSidebar,
+    getStatsConfig,
     orderHeader
 } from '../../utils/index.js';
 import { get, deleteById } from '../../api/api.js';
@@ -33,50 +34,21 @@ const OrdersPage = async () => {
         ]
     });
 
-    const stats = renderStats({
-        cardContainer: "stats",
-        cards: [
-            {
-                cardClass: "card blue",
-                cardTitle: "Tổng đơn hàng",
-                cardContent: "1,024",
-                cardContentClass: "value",
-            },
-            {
-                cardClass: "card orange",
-                cardTitle: "Đang xử lý",
-                cardContent: "15"
-            },
-            {
-                cardClass: "card green",
-                cardTitle: "Thành công",
-                cardContent: "980"
-            },
-            {
-                cardClass: "card red",
-                cardTitle: "Đã hủy",
-                cardContent: "29"
-            },
-        ]
-    });
-
     const container = document.createElement("div");
     container.className = "container";
 
-    const sidebar = renderSidebar("orders");///////
+    const sidebar = renderSidebar("orders");
 
     const mainContent = document.createElement('main');
     mainContent.className = "main-content";
 
-    mainContent.append(header, stats);
-    container.append(sidebar, mainContent);//////
+    mainContent.append(header);
+    container.append(sidebar, mainContent);
 
-    // Hàm xử lý khi bấm nút Sửa đơn hàng
     const editOrder = (order) => {
         router.navigate(`/orders/edit/${order.id}`);
     };
 
-    // Hàm xử lý khi bấm nút Xóa đơn hàng
     const deleteOrder = async (order) => {
         const confirmed = await showConfirm(
             "Xác nhận xóa đơn",
@@ -96,15 +68,34 @@ const OrdersPage = async () => {
 
         showAlert("Thành công", `Đã xóa thành công đơn hàng #${order.id}`);
 
+        // Gọi lại hàm để tự động cập nhật lại bảng và số liệu Stats giảm xuống
         await loadOrders();
     };
 
-    //  Hàm tải dữ liệu và render bảng (Có chứa bộ lọc Tabs)
+    // Hàm tải dữ liệu, tự động tính số liệu và render giao diện
     const loadOrders = async () => {
         const data = await get("orders");
         if (!data) return;
 
-        // Xóa bảng cũ nếu có trước khi chèn bảng mới (tránh bị lặp bảng khi xóa xong)
+        // update data cho stat
+        const oldStats = mainContent.querySelector(".stats");
+        if (oldStats) {
+            oldStats.remove();
+        }
+
+        // Gọi hàm Stat
+        const statsCards = getStatsConfig("orders", data);
+        const stats = renderStats({
+            cardContainer: "stats",
+            cards: statsCards
+        });
+
+        if (header.nextSibling) {
+            mainContent.insertBefore(stats, header.nextSibling);
+        } else {
+            mainContent.append(stats);
+        }
+
         const oldTable = mainContent.querySelector(".table-container");
         if (oldTable) {
             oldTable.remove();
@@ -173,6 +164,7 @@ const OrdersPage = async () => {
         mainContent.append(table);
     };
 
+    // tải dữ liệu lần đầu khi vào trang
     await loadOrders();
 
     app.innerHTML = "";
