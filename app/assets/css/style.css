@@ -15,10 +15,37 @@ body { background-color: var(--bg-color); }
 /* Sidebar tương tự Home */
 .sidebar { width: 260px; background: var(--dark-color); color: white; padding: 25px; transition: 0.3s; }
 .sidebar h2 { margin-bottom: 40px; text-align: center; color: var(--primary-color); letter-spacing: 1px; }
-.sidebar ul { list-style: none; }
 .sidebar ul li { padding: 15px; cursor: pointer; border-radius: 8px; margin-bottom: 5px; transition: 0.3s; color: #ecf0f1; }
 .sidebar ul li:hover, .sidebar ul li.active { background: #34495e; color: var(--primary-color); }
 .sidebar ul li i { margin-right: 12px; width: 20px; }
+.sidebar ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 60px);
+}
+
+/* Sidebar sau khi thêm DOM */
+.sidebar-logout {
+    margin-top: auto;
+    margin-bottom: 20px;
+    padding-left: 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--danger) !important;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sidebar-logout:hover {
+    background-color: rgba(255, 77, 79, 0.1) !important;
+    opacity: 0.9;
+
+}
 
 /* Main Area */
 .main-content { flex: 1; padding: 30px; }
@@ -59,3 +86,4 @@ td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
 .modal-content input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
 .modal-buttons { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 .btn-cancel { background: #bdc3c7; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+
