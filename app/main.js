@@ -8,6 +8,8 @@ import {
     CreateCustomerPage,
     EditCustomerPage,
     OrdersPage,
+    CreateOrderPage,
+    EditOrderPage,
     ReportsPage,
 } from "./pages";
 import { isAuthenticated, requireAuth } from "./api/auth.js";
@@ -71,6 +73,18 @@ router.on("/customers/edit/:id", ({ data }) => {
 router.on("/orders", function () {
     requireAuth(() => {
         OrdersPage();
+    });
+});
+
+router.on("/orders/create", () => {
+    requireAuth(() => {
+        CreateOrderPage();
+    });
+});
+
+router.on("/orders/edit/:id", ({ data }) => {
+    requireAuth(() => {
+        EditOrderPage(data.id);
     });
 });
 

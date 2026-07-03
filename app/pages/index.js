@@ -6,5 +6,7 @@ export { default as CustomersPage } from "./customers";
 export { CreateCustomerPage } from "./customers/create.js";
 export { EditCustomerPage } from "./customers/edit.js";
 export { default as OrdersPage } from "./orders";
+export { CreateOrderPage } from "./orders/create.js";
+export { EditOrderPage } from "./orders/edit.js";
 export { default as LoginPage } from "./login";
 export { default as ReportsPage } from "./reports";
