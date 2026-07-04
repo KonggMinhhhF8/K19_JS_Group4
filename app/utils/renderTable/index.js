@@ -1,3 +1,4 @@
+import { getRawValue } from "../getRawValue/index.js";
 export function renderTable(
     headers,
     rows,
@@ -98,16 +99,28 @@ export function renderTable(
 
         for (const header of headers) {
             const td = document.createElement("td");
+            td.dataset.key = header.key;
+
             if (header.formatter) {
                 const content = header.formatter(row);
-                if (content instanceof Node) {
-                    td.append(content);
-                } else {
-                    td.innerText = content;
+                td.append(content);
+
+                // nếu là cột name thì ghép name + sku
+                if (header.key === "name") {
+                    td.dataset.raw = `${row.name}||${row.sku}||${row.phone}`;
+                }
+                else if (header.key === "product.id") {
+                    td.dataset.raw = "#ORD-" + row.product.id;
+                }
+                else {
+                    td.dataset.raw = getRawValue(row, header.key);
                 }
             } else {
-                td.innerText = row[header.key] ?? "";
+                const rawValue = getRawValue(row, header.key);
+                td.innerText = rawValue;
+                td.dataset.raw = rawValue;
             }
+
             tr.append(td);
         }
 

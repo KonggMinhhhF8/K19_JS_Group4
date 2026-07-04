@@ -19,6 +19,7 @@ export function renderHeader({
     innerTitle,
     iconTitle,
     extraOptions = {},
+    onSearch,
 }) {
     const mainContent = document.querySelector(".main-content");
     const container = document.createElement("header");
@@ -33,6 +34,11 @@ export function renderHeader({
             searchInput.type = "text";
             searchInput.id = "searchInput";
             searchInput.placeholder = placeholderText;
+
+            // Logic for search input
+            searchInput.addEventListener("input", e => {
+                onSearch(e.target.value);
+            });
 
             divSearchBar.append(searchInput);
             container.append(divSearchBar)

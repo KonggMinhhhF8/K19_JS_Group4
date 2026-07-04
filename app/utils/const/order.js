@@ -2,19 +2,17 @@ import { formatPhone, formatNameInitials, formatVND } from "../index.js";
 
 const orderHeader = [
     {
-        key: "",
+        key: "product.id",
         text: "Mã đơn",
         formatter: row => {
-            const strongTag = document.createElement("strong");
-            strongTag.innerText = "#ORD-" + row.customer.id;
-
-            const fragment = document.createDocumentFragment();
-            fragment.append(strongTag);
-            return fragment;
-        }
+        const strongTag = document.createElement("strong");
+        const orderCode = "#ORD-" + row.product.id;
+        strongTag.innerText = orderCode;
+        return strongTag;
+    }
     },
     {
-        key: "",
+        key: "customer.name",
         text: "Khách hàng",
         formatter: row => {
             const nameTag = document.createElement("span");
@@ -30,7 +28,7 @@ const orderHeader = [
         }
     },
     {
-        key: "",
+        key: "product.name",
         text: "Sản phẩm",
         formatter: row => {
             const spanTagProduct = document.createElement("span");
@@ -42,7 +40,7 @@ const orderHeader = [
         }
     },
     {
-        key: "",
+        key: "product.price",
         text: "Tổng tiền",
         formatter: row => {
             const spanTagProduct = document.createElement("span");
@@ -54,7 +52,7 @@ const orderHeader = [
         }
     },
     {
-        key: "",
+        key: "status",
         text: "Trạng thái",
         formatter: row => {
             const span = document.createElement("span");
