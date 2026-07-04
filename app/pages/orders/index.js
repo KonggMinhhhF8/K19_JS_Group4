@@ -31,7 +31,25 @@ const OrdersPage = async () => {
                 buttonIcon: "fa-solid fa-file-export",
                 buttonClass: "btn-export",
             },
-        ]
+        ],
+        onSearch: (searchValue) => {
+            const keyword = searchValue.trim().toLowerCase();
+            const rows = document.querySelectorAll("tbody tr");
+
+            rows.forEach(row => {
+                const cells = row.querySelectorAll("td");
+                let match = false;
+
+                cells.forEach(td => {
+                    const raw = (td.dataset.raw || "").toLowerCase();
+                    if (raw.includes(keyword)) {
+                        match = true;
+                    }
+                });
+
+                row.style.display = match || keyword === "" ? "" : "none";
+            });
+        }
     });
 
     const container = document.createElement("div");

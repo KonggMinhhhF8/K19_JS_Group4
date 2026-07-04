@@ -14,3 +14,4 @@ export { formatNameInitials } from "./formatNameInititals/index.js";
 export { formatVND } from "./formatVND/index.js"
 
 export { getStatsConfig } from "./statsCalculator/index.js"
+export { getRawValue } from "./getRawValue/index.js"
