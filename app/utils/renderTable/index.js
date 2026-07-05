@@ -105,7 +105,6 @@ export function renderTable(
                 const content = header.formatter(row);
                 td.append(content);
 
-                // nếu là cột name thì ghép name + sku
                 if (header.key === "name") {
                     td.dataset.raw = `${row.name}||${row.sku}||${row.phone}`;
                 }
