@@ -1,10 +1,20 @@
 const homeHeader = [
     {
-        key: "",
-        text: "Mã đơn"
+        key: "id",
+        text: "Mã đơn",
+        formatter: row => {
+            const span = document.createElement("span");
+            span.innerText = "#" + row.product.id;
+
+
+            const fragment = document.createDocumentFragment();
+            fragment.append(span)
+
+            return fragment;
+        }
     },
     {
-        key: "",
+        key: "customer.name",
         text: "Khách hàng",
         formatter: row => {
             const span = document.createElement("span");
@@ -18,13 +28,16 @@ const homeHeader = [
         }
     },
     {
-        key: "",
+        key: "status",
         text: "Trạng thái",
         formatter: row => {
             const span = document.createElement("span");
             if(row.status === "done") {
                 span.innerText = "Thành công";
                 span.className = "status"
+            } else {
+                span.innerText = "Đang xử lý";
+                span.className = "status pending"
             }
 
 
@@ -35,7 +48,7 @@ const homeHeader = [
         }
     },
     {
-        key: "",
+        key: "customer.totalSpending",
         text: "Tổng tiền"
     },
 ];
