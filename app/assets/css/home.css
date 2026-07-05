@@ -169,6 +169,12 @@ td {
     font-weight: bold;
 }
 
+.status.pending {
+    background: #fff3e0;
+    color: #ef6c00;
+    font-weight: bold;
+}
+
 /* Mobile Responsive */
 @media (max-width: 992px) {
     .sidebar {
