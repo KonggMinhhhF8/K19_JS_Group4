@@ -66,6 +66,7 @@ const html = `
 `;
 
 const LoginPage = () => {
+    app.innerHTML = "";
     const container = document.createElement("div");
     container.classList.add("login-container");
     app.appendChild(container);
